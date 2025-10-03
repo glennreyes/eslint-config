@@ -1,8 +1,9 @@
 {
   "name": "@glennreyes/eslint-config",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Opinionated ESLint config with TypeScript, React, and Next.js support",
   "type": "module",
+  "packageManager": "pnpm@9.12.0",
   "author": "Glenn Reyes <glenn@glennreyes.com>",
   "license": "MIT",
   "repository": {
@@ -18,15 +19,36 @@
     "config"
   ],
   "files": [
-    "index.mjs",
-    "configs"
+    "dist"
   ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./index.mjs",
-    "./base": "./configs/base.mjs",
-    "./node": "./configs/node.mjs",
-    "./react": "./configs/react.mjs",
-    "./nextjs": "./configs/nextjs.mjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./base": {
+      "types": "./dist/base.d.ts",
+      "default": "./dist/base.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "default": "./dist/react.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "default": "./dist/node.js"
+    },
+    "./nextjs": {
+      "types": "./dist/nextjs.d.ts",
+      "default": "./dist/nextjs.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup && pnpm run copy-types",
+    "copy-types": "cp types/*.d.ts dist/",
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "@eslint/js": "^9.36.0",
@@ -44,7 +66,14 @@
     "typescript-eslint": "^8.45.0"
   },
   "peerDependencies": {
-    "eslint": "^9.36.0",
+    "eslint": "^9.0.0",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

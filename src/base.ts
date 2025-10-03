@@ -1,17 +1,22 @@
 import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import';
 import perfectionist from 'eslint-plugin-perfectionist';
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
 import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
-export default defineConfig([
+const importResolverSettings = {
+  typescript: { alwaysTryTypes: true },
+  node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
+} as const;
+
+const baseConfig = defineConfig([
   js.configs.recommended,
   importPlugin.flatConfigs.recommended,
-
-  // Global ignores
   {
     ignores: [
       '**/node_modules/**',
@@ -24,13 +29,10 @@ export default defineConfig([
       '**/yarn.lock',
     ],
   },
-
-  // Global rules
   {
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
-      parserOptions: { ecmaFeatures: { jsx: true } },
     },
     plugins: {
       '@stylistic': stylistic,
@@ -40,11 +42,7 @@ export default defineConfig([
       'prefer-arrow-functions': preferArrowFunctions,
     },
     rules: {
-      // Enforce curly braces on all control statements
       curly: ['error', 'all'],
-
-      // Custom stylistic rules
-      '@stylistic/jsx-curly-brace-presence': 'error',
       '@stylistic/lines-around-comment': [
         'error',
         {
@@ -67,8 +65,6 @@ export default defineConfig([
         { blankLine: 'never', next: ['const'], prev: ['const'] },
       ],
       '@stylistic/spaced-comment': 'error',
-
-      // Unused imports
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
         'error',
@@ -80,17 +76,59 @@ export default defineConfig([
           varsIgnorePattern: '^_',
         },
       ],
-
-      // Import sorting
       'perfectionist/sort-imports': [
         'error',
         { type: 'natural', order: 'asc' },
       ],
-
-      // Unicorn overrides
       'unicorn/no-nested-ternary': 'off',
       'unicorn/no-null': 'off',
       'unicorn/prevent-abbreviations': 'off',
     },
+    settings: {
+      'import/resolver': importResolverSettings,
+    },
   },
+  ...tseslint.config({
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      tseslint.configs.recommendedTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: true,
+      },
+    },
+    settings: {
+      'import/resolver': importResolverSettings,
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/no-confusing-void-expression': [
+        'error',
+        { ignoreArrowShorthand: true },
+      ],
+      '@typescript-eslint/no-floating-promises': [
+        'error',
+        { ignoreIIFE: true },
+      ],
+      '@typescript-eslint/strict-boolean-expressions': [
+        'error',
+        {
+          allowNullableBoolean: true,
+          allowNullableNumber: true,
+          allowNullableString: true,
+        },
+      ],
+      'import/consistent-type-specifier-style': 'error',
+      'no-console': ['error', { allow: ['error', 'warn'] }],
+      'no-undef': 'off',
+      'no-redeclare': 'off',
+      'no-unused-vars': 'off',
+    },
+  }),
 ]);
+
+export default baseConfig;

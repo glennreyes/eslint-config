@@ -1,18 +1,16 @@
 import { defineConfig } from 'eslint/config';
 
-import typescript from './typescript.js';
+import baseConfig from './base.js';
 
-export default defineConfig([
-  ...typescript,
-
-  // Node.js specific overrides
+const nodeConfig = defineConfig([
+  ...baseConfig,
   {
     languageOptions: {
       globals: {
-        process: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
         module: 'readonly',
+        process: 'readonly',
         require: 'readonly',
       },
     },
@@ -21,3 +19,5 @@ export default defineConfig([
     },
   },
 ]);
+
+export default nodeConfig;

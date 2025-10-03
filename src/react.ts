@@ -4,27 +4,24 @@ import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig } from 'eslint/config';
 
-import baseConfig from './base.mjs';
+import baseConfig from './base.js';
 
-export default defineConfig([
+const reactConfig = defineConfig([
   ...baseConfig,
   {
     languageOptions: {
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     plugins: {
+      '@stylistic': stylistic,
       react,
       'react-hooks': reactHooks,
       'jsx-a11y': jsxA11y,
-      '@stylistic': stylistic,
     },
     rules: {
-      // React specific rules
       'react/react-in-jsx-scope': 'off',
       'react/no-unknown-property': ['error', { ignore: ['tw'] }],
       'react/prop-types': 'off',
-
-      // Stylistic rules for JSX
       '@stylistic/jsx-curly-brace-presence': 'error',
     },
     settings: {
@@ -32,3 +29,5 @@ export default defineConfig([
     },
   },
 ]);
+
+export default reactConfig;
