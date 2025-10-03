@@ -12,12 +12,14 @@ Opinionated ESLint config with TypeScript, React, and Next.js support.
 - 🧹 Automatic unused imports removal
 - ♿ Accessibility checks (jsx-a11y)
 
+> Requires Node.js 18+ and ESLint 9 or newer.
+
 ## Installation
 
 ```bash
-npm install --save-dev @glennreyes/eslint-config eslint typescript
-# or
 pnpm add -D @glennreyes/eslint-config eslint typescript
+# or
+npm install --save-dev @glennreyes/eslint-config eslint typescript
 # or
 yarn add -D @glennreyes/eslint-config eslint typescript
 ```
@@ -26,36 +28,36 @@ yarn add -D @glennreyes/eslint-config eslint typescript
 
 ### Next.js (default)
 
-```js
-// eslint.config.mjs
+```ts
+// eslint.config.ts
 export { default } from '@glennreyes/eslint-config';
 ```
 
 ### React
 
-```js
-// eslint.config.mjs
+```ts
+// eslint.config.ts
 export { default } from '@glennreyes/eslint-config/react';
 ```
 
 ### Node.js
 
-```js
-// eslint.config.mjs
+```ts
+// eslint.config.ts
 export { default } from '@glennreyes/eslint-config/node';
 ```
 
 ### Base (TypeScript/JavaScript)
 
-```js
-// eslint.config.mjs
+```ts
+// eslint.config.ts
 export { default } from '@glennreyes/eslint-config/base';
 ```
 
 ### Extending the config
 
-```js
-// eslint.config.mjs
+```ts
+// eslint.config.ts
 import baseConfig from '@glennreyes/eslint-config';
 import { defineConfig } from 'eslint/config';
 
