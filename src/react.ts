@@ -8,6 +8,7 @@ import baseConfig from './base.js';
 
 const reactConfig = defineConfig([
   ...baseConfig,
+  ...reactHooks.configs.recommended,
   {
     languageOptions: {
       parserOptions: { ecmaFeatures: { jsx: true } },
@@ -15,7 +16,6 @@ const reactConfig = defineConfig([
     plugins: {
       '@stylistic': stylistic,
       react,
-      'react-hooks': reactHooks,
       'jsx-a11y': jsxA11y,
     },
     rules: {
